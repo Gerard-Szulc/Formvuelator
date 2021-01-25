@@ -26,7 +26,8 @@ export default defineComponent({
     model: {required: true},
     schema: {required: true}
   },
-  setup: (props) => {
+  emits: ['model-changed'],
+  setup: (props, ctx) => {
 
     const { model, schema, id} = toRefs(props)
 
@@ -85,7 +86,7 @@ export default defineComponent({
       return
       }
       modelData[fieldModel] = data.value
-      model.value = modelData
+      ctx.emit('model-change', modelData)
     }
 
 
