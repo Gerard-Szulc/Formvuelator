@@ -29,13 +29,13 @@ export default defineComponent({
 
     const handleBlur = (event: Event) => {
 
-      context.emit('blur', {value: values[schema.subtype](event), model, schema, id, originalEvent: event})
+      context.emit('blur', {value: values[schema.value.subtype](event), model, schema, id, originalEvent: event})
     }
     const handleChange = (event: Event) => {
-      context.emit('change-model', {value: values[schema.subtype](event), model, schema, id, originalEvent: event})
+      context.emit('change-model', {value: values[schema.value.subtype](event), model, schema, id, originalEvent: event})
     }
     const handleInput = (event: Event) => {
-      context.emit('input', {value: values[schema.subtype](event), model, schema, id, originalEvent: event})
+      context.emit('input', {value: values[schema.value.subtype](event), model, schema, id, originalEvent: event})
     }
     return { handleBlur, handleChange, handleInput }
   }
