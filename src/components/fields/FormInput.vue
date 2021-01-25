@@ -21,6 +21,11 @@ export default defineComponent({
   setup (props, context) {
     const { model, schema, id} = toRefs(props)
 
+    // let values = {
+    //   text: (event) => event.target.value,
+    //   checkbox: (event) => event.target.checked,
+    // }
+
     const handleBlur = (event: Event) => {
 
       context.emit('blur', {value: event.target.value, model, schema, id, originalEvent: event})
