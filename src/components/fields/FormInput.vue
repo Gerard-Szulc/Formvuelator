@@ -21,15 +21,21 @@ export default defineComponent({
   setup (props, context) {
     const { model, schema, id} = toRefs(props)
 
+    let values = {
+      text: (event) => event.target.value,
+      checkbox: (event) => event.target.checked,
+      date: (event) => event.target.value,
+    }
+
     const handleBlur = (event: Event) => {
 
-      context.emit('blur', {value: event.target.value, model, schema, id, originalEvent: event})
+      context.emit('blur', {value: values[schema.subtype](event), model, schema, id, originalEvent: event})
     }
     const handleChange = (event: Event) => {
-      context.emit('change-model', {value: event.target.value, model, schema, id, originalEvent: event})
+      context.emit('change-model', {value: values[schema.subtype](event), model, schema, id, originalEvent: event})
     }
     const handleInput = (event: Event) => {
-      context.emit('input', {value: event.target.value, model, schema, id, originalEvent: event})
+      context.emit('input', {value: values[schema.subtype](event), model, schema, id, originalEvent: event})
     }
     return { handleBlur, handleChange, handleInput }
   }
