@@ -49,8 +49,8 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import FormInput from "./fields/FormInput.vue";
-import FormTextarea from "./fields/FormTextarea.vue";
+import FormInput from "../fields/FormInput.vue";
+import FormTextarea from "../fields/FormTextarea.vue";
 import FormGroup from "./FormGroup.vue";
 
 export default defineComponent({

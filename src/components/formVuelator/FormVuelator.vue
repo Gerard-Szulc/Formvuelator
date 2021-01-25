@@ -14,84 +14,22 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, ref} from 'vue'
-import FormField from "./components/FormField.vue";
+import {defineComponent, ref, toRefs} from 'vue'
+import FormField from "../helperFields/FormField.vue";
 
 export default defineComponent({
-  name: 'App',
+  name: 'FormVuelator',
   components: {
     FormField
   },
+  props: {
+    model: {required: true},
+    schema: {required: true}
+  },
   setup: (props) => {
 
-    const count = ref(0)
-    const model = ref(
-        {
-          group1: [
-            {
-              field: 'asdasdffff',
-              group4534: [
-                {
-                  fieldcvb: 'cccc'
-                }
-              ]
-            },
-            // {
-            //   field: '',
-            //   group4534: [
-            //     {
-            //       fieldcvb: ''
-            //     }
-            //   ]
-            // }
-          ]
-        }
-    )
-    const schema = ref([
-      {
-        model: 'fieldaaaaaaaaaa',
-        type: 'input',
-        subtype: 'text'
-      },
-      {
-        type: 'group',
-        model: 'group1',
-        items: [
-          {
-            model: 'field',
-            type: 'input',
-            subtype: 'text'
-          },
-          {
-            type: 'group',
-            model: 'group4534',
-            items: [
-              {
-                model: 'fieldcvb',
-                type: 'input',
-                subtype: 'text'
-              },
-              {
-                type: 'group',
-                model: 'group45s34',
-                items: [
-                  {
-                    model: 'pole',
-                    type: 'input',
-                    subtype: 'text'
-                  },
-                  {
-                    model: 'fieldcvbssss',
-                    type: 'input',
-                    subtype: 'date'
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      },
-    ])
+    const { model, schema, id} = toRefs(props)
+
 
     const createModelByPropertiesPath = (currentModel, restPath, restIndex, fieldModel, data) => {
       let firstPathElement, firstIndexElement;
@@ -156,7 +94,7 @@ export default defineComponent({
       let [schemaModelPath, schemaModelIndex] = [data.schemaModelPath, data.schemaModelIndex]
     }
 
-    return {count, model, schema, handleClick, handleBlur, handleChange, handleInput, handleAddGroup}
+    return {model, schema, handleClick, handleBlur, handleChange, handleInput, handleAddGroup, id}
   }
 })
 </script>

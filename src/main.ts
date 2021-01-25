@@ -1,9 +1,20 @@
-import { createApp } from 'vue'
-import App from './App.vue'
-import FormField from "./components/FormField.vue";
+// import { createApp } from 'vue'
+// import FormVuelator from './FormVuelator.vue'
+//
+// const app = createApp(FormVuelator)
+//
+// // app.component('form-field', FormField)
+//
+// app.mount('#app')
+//
+import * as components from "./components/index"
 
-const app = createApp(App)
+const install = (instance) => {
+    for (let componentKey in components) {
+        instance.use((components)[componentKey])
+    }
+}
 
-// app.component('form-field', FormField)
+export default install
 
-app.mount('#app')
+export * from './components'
