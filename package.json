@@ -2,8 +2,8 @@
   "name": "formvuelator",
   "version": "0.0.0",
   "files": ["dist"],
-  "main": "./dist/my-lib.umd.js",
-  "module": "./dist/my-lib.es.js",
+  "main": "./dist/formvuelator.umd.js",
+  "module": "./dist/formvuelator.es.js",
   "exports": {
     ".": {
       "import": "./dist/formvuelator.es.js",
