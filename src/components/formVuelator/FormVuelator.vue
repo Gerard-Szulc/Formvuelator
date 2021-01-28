@@ -6,7 +6,7 @@
         :schema="field"
         :id="field.model"
         @blur="handleBlur"
-        @change-model="handleChange"
+        @change-model="handleInput"
         @input="handleInput"
         @add-group-element="handleAddGroup"
     />
@@ -26,7 +26,7 @@ export default defineComponent({
     model: {required: true},
     schema: {required: true}
   },
-  emits: ['model-change'],
+  emits: ['change-model'],
   setup: (props, ctx) => {
 
     const { model, schema, id} = toRefs(props)
@@ -68,7 +68,7 @@ export default defineComponent({
     }
 
     const handleClick = () => {
-      console.log(model.value)
+      console.log(JSON.parse(JSON.stringify(model.value)))
     }
     const handleBlur = (data) => {
       console.log('blur', data)
@@ -86,7 +86,7 @@ export default defineComponent({
       return
       }
       modelData[fieldModel] = data.value
-      ctx.emit('model-change', modelData)
+      ctx.emit('change-model', modelData, data.schema.value)
     }
 
 
