@@ -1,5 +1,4 @@
 <template>
-  <button @click.prevent="handleClick"></button>
   <div v-for="(field, index) in schema" :key="`root-field-${index}`">
     <form-field
         :model="model"
@@ -67,9 +66,6 @@ export default defineComponent({
       createModelByPropertiesPath(currentModel[firstPathElement][firstIndexElement], restPath, restIndex, fieldModel, data)
     }
 
-    const handleClick = () => {
-      console.log(JSON.parse(JSON.stringify(model.value)))
-    }
     const handleBlur = (data) => {
       console.log('blur', data)
     }
@@ -106,7 +102,7 @@ export default defineComponent({
       let [schemaModelPath, schemaModelIndex] = [data.schemaModelPath, data.schemaModelIndex]
     }
 
-    return {model, schema, handleClick, handleBlur, handleChange, handleInput, handleAddGroup, id}
+    return {model, schema, handleBlur, handleChange, handleInput, handleAddGroup, id}
   }
 })
 </script>
