@@ -87,15 +87,15 @@ export default defineComponent({
     }
 
     const handleInput = (data) => {
-      let modelData = model.value
-      let fieldModel = data.schema.value.model
+      let modelData = model
+      let fieldModel = data.schema.model
 
       if (data.hasOwnProperty('schemaModelPath') && data.hasOwnProperty('schemaModelIndex')) {
-        createModelByPropertiesPath(model.value, data.schemaModelPath, data.schemaModelIndex, fieldModel, data)
+        createModelByPropertiesPath(model, data.schemaModelPath, data.schemaModelIndex, fieldModel, data)
       return
       }
       modelData[fieldModel] = data.value
-      ctx.emit('change-model', modelData, data.schema.value)
+      ctx.emit('change-model', modelData, data.schema)
     }
 
 
