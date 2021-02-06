@@ -52,12 +52,10 @@ export default defineComponent({
       emitEvent('blur', event)
     }
     const handleChange = (event: Event) => {
-      let changedValue
-      context.emit('change-model', {value: getValue(event), model, schema, id, originalEvent: event})
+      emitEvent('change-model', event)
     }
     const handleInput = (event: Event) => {
-      let changedValue
-      context.emit('input', {value: getValue(event), model, schema, id, originalEvent: event})
+      emitEvent('input', event)
     }
     return { handleBlur, handleChange, handleInput }
   }
