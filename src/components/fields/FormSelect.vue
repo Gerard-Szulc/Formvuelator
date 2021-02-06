@@ -45,14 +45,28 @@ export default defineComponent({
   setup (props, context) {
     const { model, schema, id } = toRefs(props)
 
-    const getMultipleItemProp = (item) => schema.value.multipleByKey ? item[schema.value.optionValueKey || 'value'] : item
+    const getMultipleItemProp = (item) => {
+      if (!schema.multipleByKey) {
+        let defaultOption = {}
+        defaultOption[schema.optionValueKey || 'value'] = item[schema.optionValueKey || 'value']
+        defaultOption[schema.optionLabelKey || 'label'] = item[schema.optionLabelKey || 'label']
+        return defaultOption
+      }
+      return item[schema.optionValueKey || 'value']
+    }
 
     const getMultipleItemValues = (event) => {
-      return [...event.target.options].filter(option => option.selected).map(option => getMultipleItemProp(option))
+
+      return Array(...event.target.options).reduce((acc, option) => {
+        if (option.selected === true) {
+          acc.push(getMultipleItemProp(option));
+        }
+        return acc;
+      }, []);
     }
 
     const getValue = (event) => {
-      return schema.value.multiple ? getMultipleItemValues(event) : event.target.value
+      return schema.multiple ? getMultipleItemValues(event) : event.target.value
     }
     const emitEvent = (eventName, event) => {
       context.emit(eventName, {value: getValue(event), model, schema, id, originalEvent: event})

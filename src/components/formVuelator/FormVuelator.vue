@@ -75,15 +75,15 @@ export default defineComponent({
     }
     const handleChange = (data) => {
       console.log('change', data)
-      let modelData = model.value
-      let fieldModel = data.schema.model
-
-      if (data.hasOwnProperty('schemaModelPath') && data.hasOwnProperty('schemaModelIndex')) {
-        createModelByPropertiesPath(model.value, data.schemaModelPath, data.schemaModelIndex, fieldModel, data)
-        return
-      }
-      modelData[fieldModel] = data.value
-      ctx.emit('change-model', modelData, data.schema.value)
+      // let modelData = model.value
+      // let fieldModel = data.schema.model
+      //
+      // if (data.hasOwnProperty('schemaModelPath') && data.hasOwnProperty('schemaModelIndex')) {
+      //   createModelByPropertiesPath(model.value, data.schemaModelPath, data.schemaModelIndex, fieldModel, data)
+      //   return
+      // }
+      // modelData[fieldModel] = data.value
+      // ctx.emit('change-model', modelData, data.schema.value)
     }
 
     const handleInput = (data) => {
