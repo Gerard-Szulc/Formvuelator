@@ -75,27 +75,27 @@ export default defineComponent({
     }
     const handleChange = (data) => {
       console.log('change', data)
-      // let modelData = model.value
-      // let fieldModel = data.schema.model
-      //
-      // if (data.hasOwnProperty('schemaModelPath') && data.hasOwnProperty('schemaModelIndex')) {
-      //   createModelByPropertiesPath(model.value, data.schemaModelPath, data.schemaModelIndex, fieldModel, data)
-      //   return
-      // }
-      // modelData[fieldModel] = data.value
-      // ctx.emit('change-model', modelData, data.schema.value)
+      let modelData = model.value
+      let fieldModel = data.schema.value.model
+
+      if (data.hasOwnProperty('schemaModelPath') && data.hasOwnProperty('schemaModelIndex')) {
+        createModelByPropertiesPath(model.value, data.schemaModelPath, data.schemaModelIndex, fieldModel, data)
+        return
+      }
+      modelData[fieldModel] = data.value
+      ctx.emit('change-model', modelData, data.schema.value)
     }
 
     const handleInput = (data) => {
-      let modelData = model
-      let fieldModel = data.schema.model
+      let modelData = model.value
+      let fieldModel = data.schema.value.model
 
       if (data.hasOwnProperty('schemaModelPath') && data.hasOwnProperty('schemaModelIndex')) {
-        createModelByPropertiesPath(model, data.schemaModelPath, data.schemaModelIndex, fieldModel, data)
+        createModelByPropertiesPath(model.value, data.schemaModelPath, data.schemaModelIndex, fieldModel, data)
       return
       }
       modelData[fieldModel] = data.value
-      ctx.emit('change-model', modelData, data.schema)
+      ctx.emit('change-model', modelData, data.schema.value)
     }
 
 
