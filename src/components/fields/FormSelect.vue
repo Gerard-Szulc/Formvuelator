@@ -1,27 +1,27 @@
 <template>
   <label :for="id">
-    {{ schema.label || ''}}
+    {{ schema.label || '' }}
     <select
         :id="id"
-        :value="model[schema.model]"
+        v-model="value"
+        :value="value"
         :name="schema.name"
         :size="schema.size"
         :multiple="schema.multiple"
         :disabled="schema.disabled"
         :required="schema.required"
         @blur="handleBlur"
-        @change="handleChange"
-        @input.stop="handleInput"
+        @change.stop="handleChange"
     >
+      <option v-if="!schema.multiple" :value="null">{{ schema.nothingSelectedLabel || 'Nothing selected' }}</option>
       <template
-          v-for="option in schema.options"
-          :key="`${id}-${schema.model}-${option[schema.optionValueKey || 'value']}`"
+          v-for="(option, index) in schema.options"
+          :key="`${id}-${schema.model}-${option[schema.optionValueKey || 'value']}-temp`"
       >
         <option
             :value="option[schema.optionValueKey || 'value']"
-            :selected="option.selected"
         >
-          {{option[schema.optionLabelKey || 'label']}}
+          {{ option[schema.optionLabelKey || 'label'] }}
         </option>
       </template>
     </select>
@@ -42,11 +42,26 @@ export default defineComponent({
       required: true
     }
   },
-  setup (props, context) {
-    const { model, schema, id } = toRefs(props)
-
+  computed: {
+    value: {
+      get() {
+        if (this.schema.multiple) {
+          if (this.schema.multipleAsObjects) {
+            return (this.model[this.schema.model] || []).map(item => item[this.schema.optionValueKey || 'value'])
+          }
+          return this.model[this.schema.model] || []
+        }
+        return this.model[this.schema.model] || null
+      },
+      set(value, ...data) {
+        return value
+      }
+    }
+  },
+  setup(props, context) {
+    const {model, schema, id} = toRefs(props)
     const getMultipleItemProp = (item) => {
-      if (!schema.value.multipleByKey) {
+      if (schema.value.multipleAsObjects) {
         let defaultOption = {}
         defaultOption[schema.value.optionValueKey || 'value'] = item['value']
         defaultOption[schema.value.optionLabelKey || 'label'] = item['label']
@@ -55,33 +70,29 @@ export default defineComponent({
       return item['value']
     }
 
-    const getMultipleItemValues = (event) => {
-
-      return Array(...event.target.options).reduce((acc, option) => {
-        if (option.selected === true) {
-          acc.push(getMultipleItemProp(option));
-        }
+    const getMultipleItemValues = (value) => {
+      return Array(...value).reduce((acc, option) => {
+        acc.push(getMultipleItemProp(option));
         return acc;
       }, []);
     }
 
-    const getValue = (event) => {
-      return schema.value.multiple ? getMultipleItemValues(event) : event.target.value
-    }
-    const emitEvent = (eventName, event) => {
-      context.emit(eventName, {value: getValue(event), model, schema, id, originalEvent: event})
+    const getValue = (value) => {
+      return schema.value.multiple ? getMultipleItemValues(value) : value
     }
 
-    const handleBlur = (event: Event) => {
-      emitEvent('blur', event)
+    const emitEvent = (eventName, value, event = null) => {
+      context.emit(eventName, {value: getValue(value), model, schema, id, originalEvent: event})
     }
+
+    const handleBlur = (event: FocusEvent) => {
+      emitEvent('blured', schema.value.multiple ? event.target.selectedOptions : event.target.value, event)
+    }
+
     const handleChange = (event: Event) => {
-      emitEvent('change-model', event)
+      emitEvent('change-model', schema.value.multiple ? event.target.selectedOptions : event.target.value, event)
     }
-    const handleInput = (event: Event) => {
-      emitEvent('input', event)
-    }
-    return { handleBlur, handleChange, handleInput }
+    return {handleBlur, handleChange, emitEvent}
   }
 })
 </script>

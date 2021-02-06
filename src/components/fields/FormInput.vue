@@ -1,7 +1,8 @@
 <template>
   <label :for="id">
-    {{ schema.label || ''}}
-    <input :id="id" :type="schema.subtype || 'text'" :value="model[schema.model]" @blur="handleBlur" @change="handleChange" @input.stop="handleInput"/>
+    {{ schema.label || '' }}
+    <input :id="id" :type="schema.subtype || 'text'" :value="model[schema.model]" @blur="handleBlur"
+           @change="handleChange" @input.stop="handleInput"/>
   </label>
 </template>
 
@@ -18,8 +19,8 @@ export default defineComponent({
       required: true
     }
   },
-  setup (props, context) {
-    const { model, schema, id} = toRefs(props)
+  setup(props, context) {
+    const {model, schema, id} = toRefs(props)
 
     // let values = {
     //   text: (event) => event.target.value,
@@ -28,15 +29,15 @@ export default defineComponent({
 
     const handleBlur = (event: Event) => {
 
-      context.emit('blur', {value: event.target.value, model, schema, id, originalEvent: event})
+      context.emit('blured', {value: event.target.value, model, schema, id, originalEvent: event})
     }
     const handleChange = (event: Event) => {
       context.emit('change-model', {value: event.target.value, model, schema, id, originalEvent: event})
     }
     const handleInput = (event: Event) => {
-      context.emit('input', {value: event.target.value, model, schema, id, originalEvent: event})
+      context.emit('form-input', {value: event.target.value, model, schema, id, originalEvent: event})
     }
-    return { handleBlur, handleChange, handleInput }
+    return {handleBlur, handleChange, handleInput}
   }
 })
 </script>
