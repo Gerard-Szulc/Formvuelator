@@ -11,7 +11,7 @@
         :required="schema.required"
         @blur="handleBlur"
         @change="handleChange"
-        @input="handleInput"
+        @input.stop="handleInput"
     >
       <template
           v-for="option in schema.options"
@@ -48,11 +48,11 @@ export default defineComponent({
     const getMultipleItemProp = (item) => {
       if (!schema.value.multipleByKey) {
         let defaultOption = {}
-        defaultOption[schema.value.optionValueKey || 'value'] = item[schema.value.optionValueKey || 'value']
-        defaultOption[schema.value.optionLabelKey || 'label'] = item[schema.value.optionLabelKey || 'label']
+        defaultOption[schema.value.optionValueKey || 'value'] = item['value']
+        defaultOption[schema.value.optionLabelKey || 'label'] = item['label']
         return defaultOption
       }
-      return item[schema.value.optionValueKey || 'value']
+      return item['value']
     }
 
     const getMultipleItemValues = (event) => {
