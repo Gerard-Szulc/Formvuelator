@@ -1,7 +1,7 @@
 <template>
   <label :for="id">
     {{ schema.label || ''}}
-    <select :id="id" :value="model[schema.model]" :multiple="schema.multiple || false" @blur="handleBlur" @change="handleChange" @input.stop="handleInput">
+    <select :id="id" :value="model[schema.model]" :multiple="schema.multiple || false" @blur="handleBlur" @change="handleChange">
       <template v-for="option in schema.options" :key="`${id}-${schema.model}-${option.value}`">
         <option>{{option.label}}</option>
       </template>
@@ -38,10 +38,7 @@ export default defineComponent({
     const handleChange = (event: Event) => {
       context.emit('change-model', {value: event.target.value, model, schema, id, originalEvent: event})
     }
-    const handleInput = (event: Event) => {
-      context.emit('input', {value: event.target.value, model, schema, id, originalEvent: event})
-    }
-    return { handleBlur, handleChange, handleInput }
+    return { handleBlur, handleChange }
   }
 })
 </script>
