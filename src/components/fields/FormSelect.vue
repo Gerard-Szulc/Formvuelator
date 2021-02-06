@@ -1,7 +1,7 @@
 <template>
   <label :for="id">
     {{ schema.label || ''}}
-    <select :id="id" :multiple="schema.multiple || 'text'" :value="model[schema.model]" @blur="handleBlur" @change="handleChange" @input.stop="handleInput">
+    <select :id="id" :multiple="schema.multiple || false" :value="model[schema.model]" @blur="handleBlur" @change="handleChange" @input.stop="handleInput">
       <template v-for="option in schema.options" :key="`${id}-${schema.model}-${option.value}`">
         <option>{{option.label}}</option>
       </template>
