@@ -6,15 +6,23 @@
         :value="model[schema.model]"
         :name="schema.name"
         :size="schema.size"
-        :multiple="schema.multiple || false"
+        :multiple="schema.multiple"
         :disabled="schema.disabled"
         :required="schema.required"
         @blur="handleBlur"
         @change="handleChange"
         @input="handleInput"
     >
-      <template v-for="option in schema.options" :key="`${id}-${schema.model}-${option.value}`">
-        <option :value="option[schema.optionValueKey || 'value']" :selected="option.selected">{{option[schema.optionLabelKey || 'label']}}</option>
+      <template
+          v-for="option in schema.options"
+          :key="`${id}-${schema.model}-${option[schema.optionValueKey || 'value']}`"
+      >
+        <option
+            :value="option[schema.optionValueKey || 'value']"
+            :selected="option.selected"
+        >
+          {{option[schema.optionLabelKey || 'label']}}
+        </option>
       </template>
     </select>
   </label>
