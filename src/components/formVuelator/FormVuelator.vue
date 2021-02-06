@@ -5,10 +5,10 @@
         :model="model"
         :schema="field"
         :id="field.model"
-        @blur="handleBlur"
-        @change-model="handleInput"
-        @input="handleInput"
-        @add-group-element="handleAddGroup"
+        @blured="handleBlur"
+        @change-model="handleChange"
+        @form-input="handleInput"
+        @add-group-element.stop="handleAddGroup"
     />
   </div>
 </template>
@@ -29,7 +29,7 @@ export default defineComponent({
   emits: ['change-model'],
   setup: (props, ctx) => {
 
-    const { model, schema, id} = toRefs(props)
+    const {model, schema, id} = toRefs(props)
 
 
     const createModelByPropertiesPath = (currentModel, restPath, restIndex, fieldModel, data) => {
@@ -75,16 +75,27 @@ export default defineComponent({
     }
     const handleChange = (data) => {
       console.log('change', data)
-    }
-
-    const handleInput = (data) => {
       let modelData = model.value
       let fieldModel = data.schema.value.model
 
       if (data.hasOwnProperty('schemaModelPath') && data.hasOwnProperty('schemaModelIndex')) {
         createModelByPropertiesPath(model.value, data.schemaModelPath, data.schemaModelIndex, fieldModel, data)
-      return
+        return
       }
+      modelData[fieldModel] = data.value
+      ctx.emit('change-model', modelData, data.schema.value)
+    }
+
+    const handleInput = (data) => {
+      console.log(data)
+      let modelData = model.value
+      let fieldModel = data.schema.value.model
+
+      if (data.hasOwnProperty('schemaModelPath') && data.hasOwnProperty('schemaModelIndex')) {
+        createModelByPropertiesPath(model.value, data.schemaModelPath, data.schemaModelIndex, fieldModel, data)
+        return
+      }
+      console.log(data.value)
       modelData[fieldModel] = data.value
       ctx.emit('change-model', modelData, data.schema.value)
     }

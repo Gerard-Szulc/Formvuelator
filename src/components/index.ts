@@ -1,3 +1,3 @@
-import FormVueLator from "./formVuelator/FormVuelator.vue";
+import FormVuelator from "./formVuelator/FormVuelator.vue";
 
-export { FormVueLator };
+export { FormVuelator };

@@ -1,12 +1,12 @@
 <template>
   <label :for="id">
-    {{ schema.label || ''}}
+    {{ schema.label || '' }}
     <textarea :id="id" v-model="model[schema.model]"/>
   </label>
 </template>
 
 <script lang="ts">
-import { ref, defineComponent } from 'vue'
+import {ref, defineComponent} from 'vue'
 
 export default defineComponent({
   name: 'FormTextarea',
