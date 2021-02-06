@@ -18,6 +18,15 @@
         @change-model="handleChange"
         @input="handleInput"
     />
+    <form-select
+        v-if="schema.type === 'select'"
+        :id="`${id}-${schema.model}`"
+        :model="model"
+        :schema="schema"
+        @blur="handleInputBlur"
+        @change-model="handleChange"
+        @input="handleInput"
+    />
     <form-group
         v-if="schema.type === 'group'"
         :model="model"
@@ -52,10 +61,12 @@ import { defineComponent } from 'vue'
 import FormInput from "../fields/FormInput.vue";
 import FormTextarea from "../fields/FormTextarea.vue";
 import FormGroup from "./FormGroup.vue";
+import FormSelect from "../fields/FormSelect.vue";
 
 export default defineComponent({
   name: 'FormField',
   components: {
+    FormSelect,
     FormGroup,
     FormTextarea,
     FormInput,
