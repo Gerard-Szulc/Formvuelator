@@ -1,9 +1,18 @@
 <template>
   <label :for="id">
     {{ schema.label || ''}}
-    <select :id="id" :value="model[schema.model]" :multiple="schema.multiple || false" @blur="handleBlur" @change="handleChange">
+    <select
+        :id="id"
+        :value="model[schema.model]"
+        :name="schema.name"
+        :size="schema.size"
+        :multiple="schema.multiple || false"
+        :disabled="schema.disabled"
+        :required="schema.required"
+        @blur="handleBlur"
+        @change="handleChange">
       <template v-for="option in schema.options" :key="`${id}-${schema.model}-${option.value}`">
-        <option>{{option.label}}</option>
+        <option :value="option[schema.optionValueKey || 'value']" :selected="option.selected">{{option[schema.optionLabelKey || 'label']}}</option>
       </template>
     </select>
   </label>
@@ -24,21 +33,33 @@ export default defineComponent({
     }
   },
   setup (props, context) {
-    const { model, schema, id} = toRefs(props)
+    const { model, schema, id } = toRefs(props)
 
-    // let values = {
-    //   text: (event) => event.target.value,
-    //   checkbox: (event) => event.target.checked,
-    // }
+    const getMultipleItemProp = (item) => schema.multipleByKey ? item[schema.optionValueKey || 'value'] : item
+
+    const getMultipleItemValues = (event) => {
+      return [...event.target.options].filter(option => option.selected).map(option => getMultipleItemProp(option))
+    }
+
+    const getValue = (event) => {
+      return schema.multiple ? getMultipleItemValues(event) : event.target[schema.optionValueKey || 'value']
+    }
+    const emitEvent = (eventName, event) => {
+      context.emit(eventName, {value: getValue(event), model, schema, id, originalEvent: event})
+    }
 
     const handleBlur = (event: Event) => {
-
-      context.emit('blur', {value: event.target.value, model, schema, id, originalEvent: event})
+      emitEvent('blur', event)
     }
     const handleChange = (event: Event) => {
-      context.emit('change-model', {value: event.target.value, model, schema, id, originalEvent: event})
+      let changedValue
+      context.emit('change-model', {value: getValue(event), model, schema, id, originalEvent: event})
     }
-    return { handleBlur, handleChange }
+    const handleInput = (event: Event) => {
+      let changedValue
+      context.emit('input', {value: getValue(event), model, schema, id, originalEvent: event})
+    }
+    return { handleBlur, handleChange, handleInput }
   }
 })
 </script>
