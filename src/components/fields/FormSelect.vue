@@ -10,7 +10,9 @@
         :disabled="schema.disabled"
         :required="schema.required"
         @blur="handleBlur"
-        @change="handleChange">
+        @change="handleChange"
+        @input="handleInput"
+    >
       <template v-for="option in schema.options" :key="`${id}-${schema.model}-${option.value}`">
         <option :value="option[schema.optionValueKey || 'value']" :selected="option.selected">{{option[schema.optionLabelKey || 'label']}}</option>
       </template>
@@ -42,7 +44,7 @@ export default defineComponent({
     }
 
     const getValue = (event) => {
-      return schema.multiple ? getMultipleItemValues(event) : event.target[schema.optionValueKey || 'value']
+      return schema.multiple ? getMultipleItemValues(event) : event.target.value
     }
     const emitEvent = (eventName, event) => {
       context.emit(eventName, {value: getValue(event), model, schema, id, originalEvent: event})
