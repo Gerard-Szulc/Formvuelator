@@ -3,7 +3,6 @@
         {{ schema.label || '' }}
         <template v-for="(item, index) in localModel()">
           <div v-for="(field) in schema.items" :key="`group-${index}`" :id="`${index}-${field.model}`">
-            {{ field.model + field.type }}
             <slot
                 name="field"
                 :id="`${id}-${field.model}-${index}`"
