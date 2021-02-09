@@ -47,7 +47,7 @@
         />
       </template>
       <template v-slot:button="slotProps">
-        <button @click="() => addGroupElement({}, schema, slotProps)">add</button>
+        <button @click="(e) => addGroupElement(e, schema, slotProps)">add</button>
       </template>
 
     </form-group>
@@ -68,7 +68,7 @@ export default defineComponent({
     FormSelect,
     FormGroup,
     FormTextarea,
-    FormInput,
+    FormInput
   },
   props: {
     model: {required: true},
@@ -118,10 +118,11 @@ export default defineComponent({
       // this.$emit('input', event)
     },
     addGroupElement(event, groupSchema, slotProps) {
-      event.schemaModelPath = [groupSchema.model, ...(event.schemaModelPath || [])]
-      event.schemaModelIndex = [slotProps.index, ...(event.schemaModelIndex || [])]
+      let customEvent = {}
+      customEvent.schemaModelPath = [groupSchema.model, ...(customEvent.schemaModelPath || [])]
+      customEvent.schemaModelIndex = [slotProps.index, ...(customEvent.schemaModelIndex || [])]
 
-      this.$emit('add-group-element', event, groupSchema, slotProps)
+      this.$emit('add-group-element', {customEvent, groupSchema, slotProps})
     },
   }
 })

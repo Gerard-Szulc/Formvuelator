@@ -7,7 +7,7 @@
         @blured="handleBlur"
         @change-model="handleChange"
         @form-input="handleInput"
-        @add-group-element.stop="handleAddGroup"
+        @add-group-element="handleAddGroup"
     />
   </div>
 </template>
@@ -22,10 +22,10 @@ export default defineComponent({
     FormField
   },
   props: {
-    model: {required: true},
-    schema: {required: true}
+    model: {type: Object, required: true},
+    schema: {type: Array, required: true}
   },
-  emits: ['change-model'],
+  emits: ['change-model', 'model-created-property', 'model-created-index'],
   setup: (props, ctx) => {
 
     const {model, schema, id} = toRefs(props)
@@ -40,26 +40,34 @@ export default defineComponent({
       if (firstPathElement && restPath.length === 0) {
         subObject[fieldModel] = data.value
       }
+      console.log('trpp', subObject, currentModel, restPath, restIndex, fieldModel, data)
 
       if (!currentModel.hasOwnProperty(firstPathElement)) {
         currentModel[firstPathElement] = []
-
         if (!currentModel[firstPathElement].hasOwnProperty(firstIndexElement)) {
           currentModel[firstPathElement][firstIndexElement] = subObject
         } else {
           currentModel[firstPathElement] = [].push(subObject)
+          ctx.emit('model-created-property', {currentModel: currentModel, pathElement: firstPathElement, indexElement: firstIndexElement, schema: data.schema.value}, )
+          console.log('trollo2')
+
         }
 
       } else {
 
         if (!currentModel[firstPathElement][firstIndexElement]) {
           Array.isArray(currentModel[firstPathElement]) ? currentModel[firstPathElement].push(subObject) : currentModel[firstPathElement] = [].push(subObject)
+          ctx.emit('model-created-index', {currentModel: currentModel, pathElement: firstPathElement, indexElement: firstIndexElement, schema: data.schema.value}, )
+          console.log('trollo1')
         } else {
           currentModel[firstPathElement][firstIndexElement] = {...currentModel[firstPathElement][firstIndexElement], ...subObject}
+
         }
+
       }
 
       if (restPath.length === 0) {
+
         currentModel[firstPathElement][firstIndexElement] = {...currentModel[firstPathElement][firstIndexElement], ...subObject}
         return
       }
@@ -99,7 +107,11 @@ export default defineComponent({
 
     const handleAddGroup = (data) => {
       console.log('add', data);
-      let [schemaModelPath, schemaModelIndex] = [data.schemaModelPath, data.schemaModelIndex]
+      // let fieldModel = data.groupSchema.model
+      // let modelData = model.value
+
+      let [schemaModelPath, schemaModelIndex] = [data.customEvent.schemaModelPath, data.customEvent.schemaModelIndex]
+
     }
 
     return {model, schema, handleBlur, handleChange, handleInput, handleAddGroup, id}

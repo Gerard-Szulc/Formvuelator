@@ -1,13 +1,27 @@
 <template>
-  <label :for="id">
-    {{ schema.label || '' }}
-    <input :id="id" :type="schema.subtype || 'text'" :value="model[schema.model]" @blur="handleBlur"
-           @change="handleChange" @input.stop="handleInput"/>
-  </label>
+  <div
+      :class="schema.classes && schema.classes.fieldContainer || ''"
+  >
+    <label
+        :for="id"
+        :class="schema.classes && schema.classes.label || ''"
+    >
+      {{ schema.label || '' }}
+    </label>
+    <input
+        :id="id"
+        :type="schema.subtype || 'text'"
+        :value="model[schema.model]"
+        @blur="handleBlur"
+        @change="handleChange"
+        @input.stop="handleInput"
+        :class="schema.classes && schema.classes.field || ''"
+    />
+  </div>
 </template>
 
 <script lang="ts">
-import {toRefs, defineComponent, ref} from 'vue'
+import {toRefs, defineComponent} from 'vue'
 
 export default defineComponent({
   name: 'FormInput',
@@ -21,11 +35,6 @@ export default defineComponent({
   },
   setup(props, context) {
     const {model, schema, id} = toRefs(props)
-
-    // let values = {
-    //   text: (event) => event.target.value,
-    //   checkbox: (event) => event.target.checked,
-    // }
 
     const handleBlur = (event: Event) => {
 
