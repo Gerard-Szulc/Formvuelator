@@ -9,10 +9,11 @@
   <button @click="handleModel">clickme</button>
 </template>
 
-<script>
-import {FormVuelator} from "/lib/main";
+<script lang="ts">
+import {FormVuelator} from "../../lib/main";
+import {defineComponent} from "vue";
 
-export default {
+export default defineComponent({
   name: "DemoForm",
   components: {FormVuelator},
   data() {
@@ -98,21 +99,21 @@ export default {
     }
   },
   methods: {
-    handleChangeModel(e) {
+    handleChangeModel(e: Event) {
       console.log('change', e)
     },
-    handleCreateProperty (e) {
+    handleCreateProperty (e: Event) {
       console.log('createprop', e)
     },
-    handleCreateIndex (e) {
+    handleCreateIndex (e: Event) {
       console.log('createoindex', e)
     },
-    handleModel (e) {
+    handleModel (e: Event) {
       e.preventDefault()
       console.log(this.model)
     }
   }
-}
+})
 </script>
 
 <style scoped>

@@ -13,7 +13,7 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, ref, toRefs} from 'vue'
+import {defineComponent, toRefs} from 'vue'
 import FormField from "../helperFields/FormField.vue";
 
 export default defineComponent({
@@ -23,7 +23,8 @@ export default defineComponent({
   },
   props: {
     model: {type: Object, required: true},
-    schema: {type: Array, required: true}
+    schema: {type: Array, required: true},
+    id: {}
   },
   emits: ['change-model', 'model-created-property', 'model-created-index'],
   setup: (props, ctx) => {
@@ -74,10 +75,10 @@ export default defineComponent({
       createModelByPropertiesPath(currentModel[firstPathElement][firstIndexElement], restPath, restIndex, fieldModel, data)
     }
 
-    const handleBlur = (data) => {
+    const handleBlur = (data: any) => {
       console.log('blur', data)
     }
-    const handleChange = (data) => {
+    const handleChange = (data: any) => {
       console.log('change', data)
       let modelData = model.value
       let fieldModel = data.schema.value.model
@@ -105,7 +106,7 @@ export default defineComponent({
     }
 
 
-    const handleAddGroup = (data) => {
+    const handleAddGroup = (data: any) => {
       console.log('add', data);
       // let fieldModel = data.groupSchema.model
       // let modelData = model.value

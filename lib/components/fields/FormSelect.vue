@@ -30,7 +30,7 @@
 
 <script lang="ts">
 
-import {toRefs, defineComponent, ref} from 'vue'
+import {toRefs, defineComponent} from 'vue'
 
 export default defineComponent({
   name: 'FormSelect',
