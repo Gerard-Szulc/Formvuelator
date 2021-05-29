@@ -1,6 +1,9 @@
 {
   "name": "formvuelator",
   "version": "0.0.1",
+  "repository": {
+    "url": "https://github.com/Gerard-Szulc/Formvuelator"
+  },
   "files": [
     "dist"
   ],
@@ -18,14 +21,15 @@
     "build": "vuedx-typecheck . && vite build"
   },
   "dependencies": {
-    "vue": "^3.0.5"
+    "vue": "^3.0.11"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^1.1.4",
-    "@vue/compiler-sfc": "^3.0.5",
+    "@vitejs/plugin-vue": "^1.2.2",
+    "@vue/compiler-sfc": "^3.0.11",
     "@vuedx/typecheck": "^0.4.1",
     "@vuedx/typescript-plugin-vue": "^0.4.1",
-    "typescript": "^4.1.5",
-    "vite": "^2.0.1"
+    "typescript": "^4.3.2",
+    "vite": "^2.3.4",
+    "postcss": ">=8.2.10"
   }
 }

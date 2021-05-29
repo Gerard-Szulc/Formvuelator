@@ -82,16 +82,16 @@ export default defineComponent({
 
   },
   methods: {
-    handleInputBlur(event) {
+    handleInputBlur(event: any) {
       this.$emit('blured', event)
     },
-    handleChange(event) {
+    handleChange(event: any) {
       this.$emit('change-model', event)
     },
-    handleInput(event) {
+    handleInput(event: any) {
       this.$emit('form-input', event)
     },
-    handleInputGroupBlur(event, groupSchema, slotProps) {
+    handleInputGroupBlur(event: any, groupSchema: any, slotProps: any) {
       event.schemaModelPath = [groupSchema.model, ...(event.schemaModelPath || [])]
       event.schemaModelIndex = [slotProps.index, ...(event.schemaModelIndex || [])]
       this.$emit('blured', event, groupSchema, slotProps)
@@ -99,7 +99,7 @@ export default defineComponent({
       // console.log('group-blur', event, groupSchema, slotProps)
       // this.$emit('blur', event)
     },
-    handleGroupChange(event, groupSchema, slotProps) {
+    handleGroupChange(event: any, groupSchema: any, slotProps: any) {
       event.schemaModelPath = [groupSchema.model, ...(event.schemaModelPath || [])]
       event.schemaModelIndex = [slotProps.index, ...(event.schemaModelIndex || [])]
       this.$emit('change-model', event, groupSchema, slotProps)
@@ -108,7 +108,7 @@ export default defineComponent({
 
       // this.$emit('change-model', event)
     },
-    handleGroupInput(event, groupSchema, slotProps) {
+    handleGroupInput(event: any, groupSchema: any, slotProps: any) {
       event.schemaModelPath = [groupSchema.model, ...(event.schemaModelPath || [])]
       event.schemaModelIndex = [slotProps.index, ...(event.schemaModelIndex || [])]
       this.$emit('form-input', event, groupSchema, slotProps)
@@ -117,8 +117,12 @@ export default defineComponent({
 
       // this.$emit('input', event)
     },
-    addGroupElement(event, groupSchema, slotProps) {
-      let customEvent = {}
+    addGroupElement(event: any, groupSchema: any, slotProps: any) {
+      type customEvent = {
+        schemaModelPath?: any;
+        schemaModelIndex?: any;
+      }
+      let customEvent: customEvent = {}
       customEvent.schemaModelPath = [groupSchema.model, ...(customEvent.schemaModelPath || [])]
       customEvent.schemaModelIndex = [slotProps.index, ...(customEvent.schemaModelIndex || [])]
 

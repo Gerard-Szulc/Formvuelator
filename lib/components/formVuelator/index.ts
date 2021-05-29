@@ -1,9 +1,10 @@
 import FormVuelator from "./FormVuelator.vue";
 
-import { registerComponent } from "./../../utils/plugins/index";
-
+export const registerComponent = (instance: any, component: any) => {
+    instance.component(component.name, component)
+}
 const Plugin = {
-    install(vue) {
+    install(vue: any) {
         registerComponent(vue, FormVuelator);
     }
 };

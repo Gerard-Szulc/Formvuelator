@@ -30,28 +30,34 @@ export default defineComponent({
   components: {
   },
   props: {
-    schema: {},
-    model: {},
+    schema: {
+      type: Object,
+      default: () => ({})
+    },
+    model: {
+      type: Object,
+      default: () => ({})
+    },
     id: {}
   },
   computed: {
 
   },
   methods: {
-    localFieldModel (index: string | number): Object<any> {
+    localFieldModel (index: string | number) {
       return this.model.hasOwnProperty(this.schema.model) && this.model[this.schema.model][index] || {}
     },
-    localModel (): Object<any> {
+    localModel (): any {
       // console.log('groupmodel', this.model, this.schema.model)
       return this.model.hasOwnProperty(this.schema.model) && this.model[this.schema.model].length !== 0 ? this.model[this.schema.model] : [{}]
     },
-    handleBlur (e) {
+    handleBlur (e: any) {
       this.$emit('blur', {...e, groupModel: this.schema.model})
     },
-    handleChange (e) {
+    handleChange (e: any) {
       this.$emit('change-model', {...e, groupModel: this.schema.model})
     },
-    handleInput (e) {
+    handleInput (e: any) {
       this.$emit('input', {...e, groupModel: this.schema.model})
     }
   }

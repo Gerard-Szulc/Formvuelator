@@ -1,9 +1,7 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 // @ts-ignore
-const path = require('path')
-
-let __dirname = './';
+const path = require('path');
 export default defineConfig({
   plugins: [vue()],
   build: {

@@ -35,8 +35,16 @@ import {toRefs, defineComponent} from 'vue'
 export default defineComponent({
   name: 'FormSelect',
   props: {
-    model: {required: true},
-    schema: {required: true},
+    model: {
+      type: Object,
+      default: () => ({}),
+      required: true
+    },
+    schema: {
+      type: Object,
+      default: () => ({}),
+      required: true
+    },
     id: {
       type: String,
       required: true
@@ -44,25 +52,25 @@ export default defineComponent({
   },
   computed: {
     value: {
-      get() {
+      get(): any {
         if (this.schema.multiple) {
           if (this.schema.multipleAsObjects) {
-            return (this.model[this.schema.model] || []).map(item => item[this.schema.optionValueKey || 'value'])
+            return (this.model[this.schema.model] || []).map((item: any) => item[this.schema.optionValueKey || 'value'])
           }
           return this.model[this.schema.model] || []
         }
         return this.model[this.schema.model] || null
       },
-      set(value, ...data) {
+      set(value: any, ...data: any) {
         return value
       }
     }
   },
   setup(props, context) {
     const {model, schema, id} = toRefs(props)
-    const getMultipleItemProp = (item) => {
+    const getMultipleItemProp = (item: any) => {
       if (schema.value.multipleAsObjects) {
-        let defaultOption = {}
+        let defaultOption: any = {}
         defaultOption[schema.value.optionValueKey || 'value'] = item['value']
         defaultOption[schema.value.optionLabelKey || 'label'] = item['label']
         return defaultOption
@@ -70,26 +78,26 @@ export default defineComponent({
       return item['value']
     }
 
-    const getMultipleItemValues = (value) => {
+    const getMultipleItemValues = (value: any) => {
       return Array(...value).reduce((acc, option) => {
         acc.push(getMultipleItemProp(option));
         return acc;
       }, []);
     }
 
-    const getValue = (value) => {
+    const getValue = (value: any) => {
       return schema.value.multiple ? getMultipleItemValues(value) : value
     }
 
-    const emitEvent = (eventName, value, event = null) => {
+    const emitEvent = (eventName: any, value: any, event: any = null) => {
       context.emit(eventName, {value: getValue(value), model, schema, id, originalEvent: event})
     }
 
-    const handleBlur = (event: FocusEvent) => {
+    const handleBlur = (event: any) => {
       emitEvent('blured', schema.value.multiple ? event.target.selectedOptions : event.target.value, event)
     }
 
-    const handleChange = (event: Event) => {
+    const handleChange = (event: any) => {
       emitEvent('change-model', schema.value.multiple ? event.target.selectedOptions : event.target.value, event)
     }
     return {handleBlur, handleChange, emitEvent}

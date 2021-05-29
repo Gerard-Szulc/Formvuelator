@@ -36,14 +36,14 @@ export default defineComponent({
   setup(props, context) {
     const {model, schema, id} = toRefs(props)
 
-    const handleBlur = (event: Event) => {
+    const handleBlur = (event: any) => {
 
       context.emit('blured', {value: event.target.value, model, schema, id, originalEvent: event})
     }
-    const handleChange = (event: Event) => {
+    const handleChange = (event: any) => {
       context.emit('change-model', {value: event.target.value, model, schema, id, originalEvent: event})
     }
-    const handleInput = (event: Event) => {
+    const handleInput = (event: any) => {
       context.emit('form-input', {value: event.target.value, model, schema, id, originalEvent: event})
     }
     return {handleBlur, handleChange, handleInput}
