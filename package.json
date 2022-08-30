@@ -29,7 +29,7 @@
     "@vuedx/typecheck": "^0.4.1",
     "@vuedx/typescript-plugin-vue": "^0.4.1",
     "typescript": "^4.3.2",
-    "vite": "^2.3.4",
+    "vite": "^2.9.13",
     "postcss": ">=8.2.10"
   }
 }
