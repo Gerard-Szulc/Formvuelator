@@ -13,7 +13,7 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, toRefs} from 'vue'
+import {defineComponent, PropType, toRefs} from 'vue'
 import FormField from "../helperFields/FormField.vue";
 
 export default defineComponent({
@@ -22,8 +22,8 @@ export default defineComponent({
     FormField
   },
   props: {
-    model: {type: Object, required: true},
-    schema: {type: Array, required: true},
+    model: {required: true, type: Object as PropType<Record<string, any>>},
+    schema: {type: Array as PropType<Array<Record<string, any>>>, required: true},
     id: {}
   },
   emits: ['change-model', 'model-created-property', 'model-created-index'],
@@ -124,7 +124,7 @@ export default defineComponent({
 
     }
 
-    return {model, schema, handleBlur, handleChange, handleInput, handleAddGroup, id}
+    return { model, schema, handleBlur, handleChange, handleInput, handleAddGroup, id }
   }
 })
 </script>

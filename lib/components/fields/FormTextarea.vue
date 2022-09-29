@@ -21,13 +21,13 @@
 </template>
 
 <script lang="ts">
-import {ref, defineComponent, toRefs} from 'vue'
+import {ref, defineComponent, toRefs, PropType} from 'vue'
 
 export default defineComponent({
   name: 'FormTextarea',
   props: {
-    model: {required: true},
-    schema: {required: true},
+    model: {required: true, type: Object as PropType<Record<string, any>>},
+    schema: {required: true, type: Object as PropType<Record<string, any>>},
     id: {
       type: String,
       required: true

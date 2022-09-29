@@ -26,14 +26,22 @@ import {toRefs, defineComponent} from 'vue'
 export default defineComponent({
   name: 'FormInput',
   props: {
-    model: {required: true},
-    schema: {required: true},
+    model: {
+      type: Object,
+      default: () => ({}),
+      required: true
+      },
+    schema: {
+      type: Object,
+      default: () => ({}),
+      required: true
+      },
     id: {
       type: String,
       required: true
     }
   },
-  setup(props, context) {
+  setup(props, context): any {
     const {model, schema, id} = toRefs(props)
 
     const handleBlur = (event: any) => {

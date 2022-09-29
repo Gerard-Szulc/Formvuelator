@@ -23,7 +23,7 @@
       </div>
 </template>
 <script lang="ts">
-import {defineComponent} from 'vue'
+import {defineComponent, PropType} from 'vue'
 
 export default defineComponent({
   name: 'FormGroup',
@@ -31,12 +31,12 @@ export default defineComponent({
   },
   props: {
     schema: {
-      type: Object,
-      default: () => ({})
+      type: Object as PropType<Record<string, any>>,
+      default: () => ({} as Record<string, any>)
     },
     model: {
-      type: Object,
-      default: () => ({})
+      type: Object as PropType<Record<string, any>>,
+      default: () => ({} as Record<string, any>)
     },
     id: {}
   },

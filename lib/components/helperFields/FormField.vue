@@ -56,7 +56,7 @@
 </template>
 
 <script lang="ts">
-import {defineComponent} from 'vue'
+import {defineComponent, PropType} from 'vue'
 import FormInput from "../fields/FormInput.vue";
 import FormTextarea from "../fields/FormTextarea.vue";
 import FormGroup from "./FormGroup.vue";
@@ -71,8 +71,8 @@ export default defineComponent({
     FormInput
   },
   props: {
-    model: {required: true},
-    schema: {required: true},
+    model: {required: true, type: Object as PropType<Record<string, any>>},
+    schema: {required: true, type: Object as PropType<Record<string, any>>},
     id: {
       type: String,
       required: true
