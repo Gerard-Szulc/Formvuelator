@@ -2,30 +2,30 @@
   <label :for="id">
     {{ schema.label || "" }}
     <select
-      :id="id"
-      :value="value"
-      :name="schema.name"
-      :size="schema.size"
-      :multiple="schema.multiple"
-      :disabled="schema.disabled"
-      :required="schema.required"
-      @blur="handleBlur"
-      @change.stop="handleChange"
+        :id="id"
+        :value="value"
+        :name="schema.name"
+        :size="schema.size"
+        :multiple="schema.multiple"
+        :disabled="schema.disabled"
+        :required="schema.required"
+        @blur="handleBlur"
+        @change.stop="handleChange"
     >
       <option v-if="!schema.multiple" :value="''">
         {{ schema.nothingSelectedLabel || "Nothing selected" }}
       </option>
       <template
-        v-for="option in schema.options"
-        :key="`${id}-${schema.model}-${
+          v-for="option in schema.options"
+          :key="`${id}-${schema.model}-${
           option[schema.optionValueKey || 'value']
         }-temp`"
       >
         <option
-          :value="option[schema.optionValueKey || 'value']"
-          :selected="
+            :value="option[schema.optionValueKey || 'value']"
+            :selected="
             schema.multiple
-              ? value.includes(String(option[schema.optionValueKey || 'value']))
+              ? value.find((element) => String(element) == String(option[schema.optionValueKey || 'value']))
               : value === option[schema.optionValueKey || 'value']
           "
         >
@@ -63,7 +63,7 @@ export default defineComponent({
         if (this.schema.multiple) {
           if (this.schema.multipleAsObjects) {
             return (this.model[this.schema.model] || []).map(
-              (item: any) => item[this.schema.optionValueKey || "value"]
+                (item: any) => item[this.schema.optionValueKey || "value"]
             );
           }
           return this.model[this.schema.model] || [];
@@ -78,10 +78,12 @@ export default defineComponent({
   setup(props, context) {
     const { model, schema, id } = toRefs(props);
     const getMultipleItemProp = (item: any) => {
+      console.log('item', item)
       if (schema.value.multipleAsObjects) {
         let defaultOption: any = {};
-        defaultOption[schema.value.optionValueKey || "value"] = item["value"];
-        defaultOption[schema.value.optionLabelKey || "label"] = item["label"];
+        defaultOption[schema.value.optionValueKey || "value"] = item[schema.value.optionValueKey || "value"];
+        defaultOption[schema.value.optionLabelKey || "label"] = item[schema.value.optionLabelKey || "label"];
+        console.log('defaultOption', defaultOption);
         return defaultOption;
       }
       return item["value"];
@@ -99,6 +101,7 @@ export default defineComponent({
     };
 
     const emitEvent = (eventName: any, value: any, event: any = null) => {
+      console.log('value', value, getValue(value))
       context.emit(eventName, {
         value: getValue(value),
         model,
@@ -110,22 +113,35 @@ export default defineComponent({
 
     const handleBlur = (event: any) => {
       emitEvent(
-        "blured",
-        schema.value.multiple
-          ? event.target.selectedOptions
-          : event.target.value,
-        event
+          "blured",
+          schema.value.multiple
+              ? Array.from(event.target.selectedOptions)
+                  .map((option => schema.value.options
+                      .find((element) => String(element[schema.value.optionValueKey || "value"]) === String(option.value))))
+              : event.target.value,
+          event
       );
     };
 
     const handleChange = (event: any) => {
-      console.log("eeee", event.target.selectedOptions);
+      // if (schema.value.multiple) {
+      //   console.log(event.target.selectedOptions.map((option => option.value)));
+      //   return
+      // }
+
+      console.log("eeee", schema.value.multiple
+          ? Array.from(event.target.selectedOptions)
+              .map((option => schema.value.options
+                  .find((element) => String(element[schema.value.optionValueKey || "value"]) === String(option.value))))
+          : event.target.value);
       emitEvent(
-        "change-model",
-        schema.value.multiple
-          ? event.target.selectedOptions
-          : event.target.value,
-        event
+          "change-model",
+          schema.value.multiple
+              ? Array.from(event.target.selectedOptions)
+                  .map((option => schema.value.options
+                      .find((element) => String(element[schema.value.optionValueKey || "value"]) === String(option.value))))
+              : event.target.value,
+          event
       );
     };
     return { handleBlur, handleChange, emitEvent };

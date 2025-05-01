@@ -43,11 +43,11 @@
             @blured="(e) => handleInputGroupBlur(e, schema, slotProps)"
             @change-model="(e) => handleGroupChange(e, schema, slotProps)"
             @form-input="(e) => handleGroupInput(e, schema, slotProps)"
-            @add-group-element="(e) => addGroupElement(e, schema, slotProps)"
+            @add-group-element="(e) => addGroupElement(e, schema, slotProps.index)"
         />
       </template>
-      <template v-slot:button="slotProps">
-        <button @click="(e) => addGroupElement(e, schema, slotProps)">add</button>
+      <template v-slot:button>
+        <button @click="() => addGroupElement(undefined, schema, undefined)">add</button>
       </template>
 
     </form-group>
@@ -81,6 +81,7 @@ export default defineComponent({
   mounted() {
 
   },
+  emits: ['blured', 'change-model', 'form-input', 'add-group-element'],
   methods: {
     handleInputBlur(event: any) {
       this.$emit('blured', event)
@@ -117,16 +118,13 @@ export default defineComponent({
 
       // this.$emit('input', event)
     },
-    addGroupElement(event: any, groupSchema: any, slotProps: any) {
-      type customEvent = {
-        schemaModelPath?: any;
-        schemaModelIndex?: any;
+    addGroupElement(event: any | undefined, groupSchema: any, index: any) {
+      let path = [groupSchema.model]
+      if (event) {
+        path = event.path.concat(index, groupSchema.model)
+        console.log('path', path, index)
       }
-      let customEvent: customEvent = {}
-      customEvent.schemaModelPath = [groupSchema.model, ...(customEvent.schemaModelPath || [])]
-      customEvent.schemaModelIndex = [slotProps.index, ...(customEvent.schemaModelIndex || [])]
-
-      this.$emit('add-group-element', {customEvent, groupSchema, slotProps})
+      this.$emit('add-group-element', {path})
     },
   }
 })
