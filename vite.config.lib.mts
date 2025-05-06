@@ -2,10 +2,9 @@ import { defineConfig } from 'vite'
 import { resolve } from 'path'
 import vue from '@vitejs/plugin-vue'
 import dts from "vite-plugin-dts";
-import { VueMcp } from 'vite-plugin-vue-mcp'
 
 export default defineConfig({
-  plugins: [vue(), dts({ tsconfigPath: 'tsconfig.lib.json'}), VueMcp()],
+  plugins: [vue(), dts({ tsconfigPath: 'tsconfig.lib.json'})],
   build: {
     lib: {
       entry: resolve(__dirname, 'lib/index.ts'),
