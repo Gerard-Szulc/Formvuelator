@@ -36,113 +36,96 @@
   </label>
 </template>
 
-<script lang="ts">
-import { toRefs, defineComponent } from "vue";
+<script setup lang="ts">
+import { computed, toRefs } from "vue";
 
-export default defineComponent({
-  name: "FormSelect",
-  props: {
-    model: {
-      type: Object,
-      default: () => ({}),
-      required: true,
-    },
-    schema: {
-      type: Object,
-      default: () => ({}),
-      required: true,
-    },
-    id: {
-      type: String,
-      required: true,
-    },
+const props = defineProps({
+  model: {
+    type: Object,
+    default: () => ({}),
+    required: true,
   },
-  computed: {
-    value: {
-      get(): any {
-        if (this.schema.multiple) {
-          if (this.schema.multipleAsObjects) {
-            return (this.model[this.schema.model] || []).map(
-                (item: any) => item[this.schema.optionValueKey || "value"]
-            );
-          }
-          return this.model[this.schema.model] || [];
-        }
-        return this.model[this.schema.model] || "";
-      },
-      set(value: any, ...data: any) {
-        return value;
-      },
-    },
+  schema: {
+    type: Object,
+    default: () => ({}),
+    required: true,
   },
-  setup(props, context) {
-    const { model, schema, id } = toRefs(props);
-    const getMultipleItemProp = (item: any) => {
-      console.log('item', item)
-      if (schema.value.multipleAsObjects) {
-        let defaultOption: any = {};
-        defaultOption[schema.value.optionValueKey || "value"] = item[schema.value.optionValueKey || "value"];
-        defaultOption[schema.value.optionLabelKey || "label"] = item[schema.value.optionLabelKey || "label"];
-        console.log('defaultOption', defaultOption);
-        return defaultOption;
-      }
-      return item["value"];
-    };
-
-    const getMultipleItemValues = (value: any) => {
-      return Array(...value).reduce((acc, option) => {
-        acc.push(getMultipleItemProp(option));
-        return acc;
-      }, []);
-    };
-
-    const getValue = (value: any) => {
-      return schema.value.multiple ? getMultipleItemValues(value) : value;
-    };
-
-    const emitEvent = (eventName: any, value: any, event: any = null) => {
-      context.emit(eventName, {
-        value: getValue(value),
-        model,
-        schema,
-        id,
-        originalEvent: event,
-      });
-    };
-
-    const handleBlur = (event: any) => {
-      emitEvent(
-          "blured",
-          schema.value.multiple
-              ? Array.from(event.target.selectedOptions)
-                  .map((option => schema.value.options
-                      .find((element: string) => String(element[schema.value.optionValueKey || "value"]) === String(option.value))))
-              : event.target.value,
-          event
-      );
-    };
-
-    const handleChange = (event: any) => {
-
-
-      console.log("eeee", schema.value.multiple
-          ? Array.from(event.target.selectedOptions)
-              .map((option => schema.value.options
-                  .find((element: string) => String(element[schema.value.optionValueKey || "value"]) === String(option.value))))
-          : event.target.value);
-      emitEvent(
-          "change-model",
-          schema.value.multiple
-              ? Array.from(event.target.selectedOptions)
-                  .map((option => schema.value.options
-                      .find((element: string) => String(element[schema.value.optionValueKey || "value"]) === String(option.value))))
-              : event.target.value,
-          event
-      );
-    };
-    return { handleBlur, handleChange, emitEvent };
+  id: {
+    type: String,
+    required: true,
   },
 });
+
+const { model, schema, id } = toRefs(props)
+// Using simpler emit definition
+const emit = defineEmits(['blured', 'change-model']);
+
+const value = computed(() => {
+  if (schema.value.multiple) {
+    if (schema.value.multipleAsObjects) {
+      return (model.value[schema.value.model] || []).map(
+        (item: any) => item[schema.value.optionValueKey || "value"]
+      );
+    }
+    return model.value[schema.value.model] || [];
+  }
+  return model.value[schema.value.model] || "";
+});
+
+const getMultipleItemProp = (item: any) => {
+  if (schema.value.multipleAsObjects) {
+    let defaultOption: any = {};
+    defaultOption[schema.value.optionValueKey || "value"] = item[schema.value.optionValueKey || "value"];
+    defaultOption[schema.value.optionLabelKey || "label"] = item[schema.value.optionLabelKey || "label"];
+    return defaultOption;
+  }
+  return item["value"];
+};
+
+const getMultipleItemValues = (value: any) => {
+  return Array(...value).reduce((acc: any[], option: any) => {
+    acc.push(getMultipleItemProp(option));
+    return acc;
+  }, []);
+};
+
+const getValue = (value: any) => {
+  return schema.value.multiple ? getMultipleItemValues(value) : value;
+};
+
+const emitEvent = (eventName: 'blured' | 'change-model', value: any, event: any = null) => {
+  emit(eventName, {
+    value: getValue(value),
+    model,
+    schema,
+    id,
+    originalEvent: event,
+  });
+};
+
+const handleBlur = (event: any) => {
+  emitEvent(
+    "blured",
+    schema.value.multiple
+      ? Array.from(event.target.selectedOptions)
+          .map((option: any) => schema.value.options
+              .find((element: any) => String(element[schema.value.optionValueKey || "value"]) === String(option.value)))
+      : event.target.value,
+    event
+  );
+};
+
+const handleChange = (event: any) => {
+  emitEvent(
+    "change-model",
+    schema.value.multiple
+      ? Array.from(event.target.selectedOptions)
+          .map((option: any) => schema.value.options
+              .find((element: any) => String(element[schema.value.optionValueKey || "value"]) === String(option.value)))
+      : event.target.value,
+    event
+  );
+};
 </script>
 
 <style scoped>
